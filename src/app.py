@@ -17,3 +17,7 @@ def main():
 def echo_input():
     input_text = request.form.get("user_input", "")
     return "You entered: " + input_text
+
+if __name__ == "__main__":
+    # Run the Flask application on port 8080
+    app.run(host="0.0.0.0", port=8080)
