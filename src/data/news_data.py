@@ -10,15 +10,17 @@ def fetch_news(ticker):
     base_url = 'https://newsapi.org/v2/everything'
 
     # Calculate the start date as 6 months ago from the current date
-    six_months_ago = datetime.now() - timedelta(days=30*3)
-    start_date = six_months_ago.strftime('%Y-%m-%d')
+    one_month_ago = datetime.now() - timedelta(days=30*1)
+    start_date = one_month_ago.strftime('%Y-%m-%d')
+    print("Start Date:", start_date)  # Add this line for debugging
 
     # Define the parameters for the API request
     params = {
-        'q': ticker,  # Search query with the ticker symbol
-        'from': start_date,  # Start date for news search (6 months ago)
-        'sortBy': 'publishedAt',  # Sort news by publication date
-        'apiKey': api_key  # Your API key
+    'q': ticker,  # Search query with the ticker symbol
+    'from': start_date,
+    #'from': '2024-01-29',  # Start date for news search
+    'sortBy': 'publishedAt',  # Sort news by publication date
+    'apiKey': '840ef8b55d9b4dfcbe578de2860ce809'  # Your API key
     }
 
     # Define additional headers
@@ -29,8 +31,12 @@ def fetch_news(ticker):
 
     try:
         # Send a GET request to the News API with additional headers
-        response = requests.get('https://newsapi.org/v2/everything?q=AAPL&from=2024-03-24&sortBy=publishedAt&apiKey=840ef8b55d9b4dfcbe578de2860ce809')
-        #response = requests.get(base_url, params=params, headers=headers)
+        user_agent = 'market mood/1.0'
+
+        # Set the user-agent header in the request
+        headers = {'User-Agent': user_agent}
+        #response = requests.get('https://newsapi.org/v2/everything?q=AAPL&from=2024-03-28&sortBy=publishedAt&apiKey=840ef8b55d9b4dfcbe578de2860ce809')
+        response = requests.get(base_url, params=params, headers=headers)
         response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
 
         # Extract the JSON data from the response
