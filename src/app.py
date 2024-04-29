@@ -22,15 +22,15 @@ def search():
     search_query = request.form.get("search_query", "")
     if search_query:
         # Fetch stock prices and news data
-        stock_prices = stock_data.fetch_stock_prices(search_query)
+        stock_prices = stock_data.fetch_stock_prices_from_db(search_query)
         news_stories = news_data.fetch_news(search_query)
         
-        # Insert stock prices into the database
-        if stock_prices:
+        if stock_prices is not None:
+            # Insert stock prices into the database
             database_operations.insert_stock_prices(stock_prices)
         
-        # Insert news stories into the database
-        if news_stories:
+        if news_stories is not None:
+            # Insert news stories into the database
             database_operations.insert_news_stories(news_stories)
         
         # Process the retrieved data and render a template to display it

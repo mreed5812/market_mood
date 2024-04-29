@@ -44,6 +44,9 @@ def fetch_news(ticker):
 
         # Extract the list of articles from the response
         articles = data.get('articles', [])
+        
+        for article in articles:
+            article['symbol'] = ticker
 
         # Insert news stories into the database
         if articles:
