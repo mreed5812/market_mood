@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Series Chart</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Time Series Chart for {{ symbol }}</h1>
+    <div id="time-series-chart"></div>
+    <script>
+        var dates = {{ dates | tojson }};
+        var closePrices = {{ close_prices | tojson }};
+        
+        var trace = {
+            x: dates,
+            y: closePrices,
+            mode: 'lines',
+            type: 'scatter'
+        };
+
+        var layout = {
+            title: 'Stock Close Prices Over Time',
+            xaxis: {
+                title: 'Date'
+            },
+            yaxis: {
+                title: 'Close Price'
+            }
+        };
+
+        Plotly.newPlot('time-series-chart', [trace], layout);
+    </script>
+</body>
+</html>

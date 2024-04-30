@@ -32,34 +32,38 @@ def fetch_stock_prices(symbol):
         return []  # Return an empty list if no data is available
 
 def fetch_stock_prices_from_db(symbol):
-    # Connect to the database
-    conn = sqlite3.connect('market_mood.db')
-    c = conn.cursor()
+    try:
+        # Connect to the database
+        conn = sqlite3.connect('market_mood.db')
+        c = conn.cursor()
 
-    # Calculate the start date as 6 months ago from the current date
-    one_month_ago = datetime.now() - timedelta(days=30*1)
-    start_date = one_month_ago.strftime('%Y-%m-%d')
+        # Calculate the start date as 6 months ago from the current date
+        one_month_ago = datetime.now() - timedelta(days=30*1)
+        start_date = one_month_ago.strftime('%Y-%m-%d')
 
-    # Query the database for stock prices
-    c.execute('''SELECT * FROM stock_prices 
-                 WHERE symbol = ? AND date >= ? 
-                 ORDER BY date DESC''', (symbol, start_date))
-    rows = c.fetchall()
+        # Query the database for stock prices for the specified symbol
+        c.execute('''SELECT * FROM stock_prices 
+                     WHERE symbol = ? AND date >= ? 
+                     ORDER BY date DESC''', (symbol, start_date))
+        rows = c.fetchall()
 
-    # Close the database connection
-    conn.close()
+        # Close the database connection
+        conn.close()
 
-    # Convert the fetched rows into a list of dictionaries
-    stock_prices = []
-    for row in rows:
-        stock_prices.append({
-            'symbol': row[0],
-            'date': row[1],
-            'open': row[2],
-            'high': row[3],
-            'low': row[4],
-            'close': row[5],
-            'volume': row[6]
-        })
+        # Convert the fetched rows into a list of dictionaries
+        stock_prices = []
+        for row in rows:
+            stock_prices.append({
+                'symbol': row[1],
+                'date': row[2],
+                'open': row[3],
+                'high': row[4],
+                'low': row[5],
+                'close': row[6],
+                'volume': row[7]
+            })
 
-    return stock_prices
+        return stock_prices
+    except Exception as e:
+        print(f"Error fetching stock prices from database: {e}")
+        return []
