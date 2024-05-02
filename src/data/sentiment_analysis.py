@@ -3,7 +3,7 @@ from textblob import TextBlob
 
 def update_sentiment_values():
     # Connect to the database
-    conn = sqlite3.connect('../market_mood.db')
+    conn = sqlite3.connect('market_mood.db')
     c = conn.cursor()
     
     # Retrieve news stories from the database
@@ -26,5 +26,3 @@ def update_sentiment_values():
     conn.close()
 
 
-# Update sentiment values for existing news stories
-update_sentiment_values()

@@ -8,29 +8,47 @@
 </head>
 <body>
     <h1>Time Series Chart for {{ symbol }}</h1>
+    <div>
+        <form action="/" method="GET">
+            <button type="submit">Back to Home</button>
+        </form>
+    </div>
     <div id="time-series-chart"></div>
+    <h2>Sentiment Analysis for {{ symbol }}</h2>
+    <div id="sentiment-chart"></div>
     <script>
         var dates = {{ dates | tojson }};
         var closePrices = {{ close_prices | tojson }};
+        var sentimentValues = {{ sentiment_values | tojson }};
         
-        var trace = {
+        var trace1 = {
             x: dates,
             y: closePrices,
             mode: 'lines',
-            type: 'scatter'
+            type: 'scatter',
+            name: 'Close Price'
+        };
+
+        var trace2 = {
+            x: dates,
+            y: sentimentValues,
+            mode: 'lines',
+            type: 'scatter',
+            name: 'Sentiment'
         };
 
         var layout = {
-            title: 'Stock Close Prices Over Time',
+            title: 'Stock Close Prices and Sentiment Over Time',
             xaxis: {
                 title: 'Date'
             },
             yaxis: {
-                title: 'Close Price'
+                title: 'Value'
             }
         };
 
-        Plotly.newPlot('time-series-chart', [trace], layout);
+        Plotly.newPlot('time-series-chart', [trace1], layout);
+        Plotly.newPlot('sentiment-chart', [trace2], layout);
     </script>
 </body>
 </html>

@@ -1,14 +1,15 @@
 import requests
 import sqlite3
 from datetime import datetime, timedelta
+from data import database_operations
 
-def fetch_stock_prices(symbol):
+def fetch_stock_data(symbol):
     API_KEY = 'SFRHBUTCXB3RDG5S'
     
     # Calculate the start date as 6 months ago from the current date
     one_month_ago = datetime.now() - timedelta(days=30*1)
     start_date = one_month_ago.strftime('%Y-%m-%d')
-
+    
     url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={API_KEY}&outputsize=compact&datatype=json&startdate={start_date}'
     print(url)
     response = requests.get(url)
@@ -37,11 +38,11 @@ def fetch_stock_prices_from_db(symbol):
         conn = sqlite3.connect('market_mood.db')
         c = conn.cursor()
 
-        # Calculate the start date as 6 months ago from the current date
-        one_month_ago = datetime.now() - timedelta(days=30*1)
-        start_date = one_month_ago.strftime('%Y-%m-%d')
+        # Calculate the start date as 30 days ago from the current date
+        thirty_days_ago = datetime.now() - timedelta(days=30)
+        start_date = thirty_days_ago.strftime('%Y-%m-%d')
 
-        # Query the database for stock prices for the specified symbol
+        # Query the database for stock prices for the specified symbol and time period
         c.execute('''SELECT * FROM stock_prices 
                      WHERE symbol = ? AND date >= ? 
                      ORDER BY date DESC''', (symbol, start_date))
@@ -50,20 +51,42 @@ def fetch_stock_prices_from_db(symbol):
         # Close the database connection
         conn.close()
 
-        # Convert the fetched rows into a list of dictionaries
-        stock_prices = []
-        for row in rows:
-            stock_prices.append({
-                'symbol': row[1],
-                'date': row[2],
-                'open': row[3],
-                'high': row[4],
-                'low': row[5],
-                'close': row[6],
-                'volume': row[7]
-            })
+        # If data is found in the database
+        if rows:
+            stock_prices = []
+            for row in rows:
+                stock_prices.append({
+                    'symbol': row[1],
+                    'date': row[2],
+                    'open': row[3],
+                    'high': row[4],
+                    'low': row[5],
+                    'close': row[6],
+                    'volume': row[7]
+                })
 
-        return stock_prices
+            # Check if there are at least 30 days of data
+            latest_date = datetime.strptime(stock_prices[0]['date'], '%Y-%m-%d')
+            earliest_date = datetime.strptime(stock_prices[-1]['date'], '%Y-%m-%d')
+            days_difference = (latest_date - earliest_date).days + 1  # Add 1 to include both start and end dates
+            if days_difference < 30:
+                # If there aren't enough days of data, fetch new data from API
+                stock_prices = fetch_stock_data(symbol)
+                if stock_prices:
+                    # Insert fetched data into the database
+                    database_operations.insert_stock_prices(stock_prices)
+                else:
+                    print("Error fetching stock data from API.")
+            return stock_prices
+        else:
+            # If no data is found in the database, fetch new data from API
+            stock_prices = fetch_stock_data(symbol)
+            if stock_prices:
+                # Insert fetched data into the database
+                database_operations.insert_stock_prices(stock_prices)
+            else:
+                print("Error fetching stock data from API.")
+            return stock_prices
     except Exception as e:
         print(f"Error fetching stock prices from database: {e}")
         return []
