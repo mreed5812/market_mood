@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from data import database_operations
+from . import database_operations
 import requests
 
 def fetch_news(ticker):

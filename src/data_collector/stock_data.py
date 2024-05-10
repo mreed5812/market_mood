@@ -1,7 +1,11 @@
 import requests
 import sqlite3
+import os
 from datetime import datetime, timedelta
-from data import database_operations
+from . import database_operations
+
+DB_FILE_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'database', 'market_mood.db')
+
 
 def fetch_stock_data(symbol):
     API_KEY = 'SFRHBUTCXB3RDG5S'
@@ -35,7 +39,7 @@ def fetch_stock_data(symbol):
 def fetch_stock_prices_from_db(symbol):
     try:
         # Connect to the database
-        conn = sqlite3.connect('market_mood.db')
+        conn = sqlite3.connect(DB_FILE_PATH)
         c = conn.cursor()
 
         # Calculate the start date as 30 days ago from the current date

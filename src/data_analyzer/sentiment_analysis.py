@@ -1,9 +1,13 @@
 import sqlite3
 from textblob import TextBlob
+import os
+
+DB_FILE_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'database', 'market_mood.db')
+
 
 def update_sentiment_values():
     # Connect to the database
-    conn = sqlite3.connect('market_mood.db')
+    conn = sqlite3.connect(DB_FILE_PATH)
     c = conn.cursor()
     
     # Retrieve news stories from the database

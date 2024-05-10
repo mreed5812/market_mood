@@ -1,9 +1,12 @@
 import os
 import sqlite3
 
+DB_FILE_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'database', 'market_mood.db')
+
+
 def insert_stock_prices(stock_prices):
-    db_path = os.path.join(os.getcwd(), 'market_mood.db')
-    conn = sqlite3.connect(db_path)
+    #db_path = os.path.join(os.getcwd(), 'market_mood.db')
+    conn = sqlite3.connect(DB_FILE_PATH)
     c = conn.cursor()
     for price in stock_prices:
         # Check if the record already exists in the database
@@ -19,7 +22,7 @@ def insert_stock_prices(stock_prices):
     conn.close()
 
 def insert_news_stories(news_stories, symbol):
-    conn = sqlite3.connect('market_mood.db')
+    conn = sqlite3.connect(DB_FILE_PATH)
     c = conn.cursor()
     for story in news_stories:
         # Check if the record already exists in the database
@@ -37,7 +40,7 @@ def insert_news_stories(news_stories, symbol):
 
 
 def fetch_news_stories_by_symbol_and_date_range(symbol, start_date, end_date):
-    conn = sqlite3.connect('market_mood.db')
+    conn = sqlite3.connect(DB_FILE_PATH)
     c = conn.cursor()
     c.execute('''SELECT * FROM news_stories WHERE symbol = ? AND published_at BETWEEN ? AND ?''', (symbol, start_date, end_date))
     news_stories = []

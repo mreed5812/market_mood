@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template
-from data import stock_data, news_data, database_operations, sentiment_analysis
+from data_collector import stock_data, news_data, database_operations
+from data_analyzer import sentiment_analysis
 from datetime import datetime
 
 app = Flask(__name__)
