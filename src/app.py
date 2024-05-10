@@ -2,8 +2,10 @@ from flask import Flask, request, render_template
 from data_collector import stock_data, news_data, database_operations
 from data_analyzer import sentiment_analysis
 from datetime import datetime
+import time
 
 app = Flask(__name__)
+
 
 @app.route("/")
 def main():
@@ -22,11 +24,14 @@ def search():
     if search_query:
         # Fetch stock prices
         stock_prices = stock_data.fetch_stock_prices_from_db(search_query)
-        
-        # Fetch news stories from the database
         news_stories = news_data.fetch_news(search_query)
         
-        sentiment_analysis.update_sentiment_values()
+        # Update sentiment values
+        sentiment_analysis.update_sentiment_values(search_query)
+        time.sleep(5)
+        
+        # Fetch news stories from the database after updating sentiment values
+        news_stories = news_data.fetch_news(search_query)
         
         if stock_prices and news_stories:
             # Sort stock prices by date
@@ -37,14 +42,15 @@ def search():
             close_prices = [price['close'] for price in stock_prices]
 
             # Extract sentiment values for plotting
-            sentiment_values = [story['sentiment'] for story in news_stories]
-
+            sentiment_values = [story.get('sentiment', 0) for story in news_stories]  # Use get() to handle missing 'sentiment' key
+            
             # Render a time series chart using Plotly
             return render_template("time_series_chart.html", dates=dates, close_prices=close_prices, symbol=search_query, sentiment_values=sentiment_values)
         else:
             return "No stock prices available for the specified symbol."
     else:
         return "Please enter a search query."
+
 
 
 if __name__ == "__main__":

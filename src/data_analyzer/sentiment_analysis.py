@@ -5,13 +5,13 @@ import os
 DB_FILE_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'database', 'market_mood.db')
 
 
-def update_sentiment_values():
+def update_sentiment_values(search_query):
     # Connect to the database
     conn = sqlite3.connect(DB_FILE_PATH)
     c = conn.cursor()
     
-    # Retrieve news stories from the database
-    c.execute('''SELECT * FROM news_stories''')
+    # Retrieve news stories from the database for the specified symbol
+    c.execute('''SELECT * FROM news_stories WHERE symbol = ?''', (search_query,))
     rows = c.fetchall()
     
     # Iterate through each news story
@@ -28,5 +28,3 @@ def update_sentiment_values():
     # Commit the changes and close the connection
     conn.commit()
     conn.close()
-
-
