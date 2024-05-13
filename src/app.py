@@ -23,7 +23,7 @@ def search():
     search_query = request.form.get("search_query", "")
     if search_query:
         # Fetch stock prices
-        stock_prices = stock_data.fetch_stock_prices_from_db(search_query)
+        stock_prices = stock_data.fetch_stock_prices(search_query)
         news_stories = news_data.fetch_news(search_query)
         
         # Update sentiment values

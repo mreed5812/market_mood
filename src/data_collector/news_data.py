@@ -4,12 +4,12 @@ import requests
 
 def fetch_news(ticker):
     # Calculate the start date as 30 days ago from the current date
-    thirty_days_ago = datetime.now() - timedelta(days=30)
+    thirty_days_ago = datetime.now() - timedelta(days=29)
 
-    # Retrieve news data from the database for the last 30 days
+    # Retrieve news data from the database for the last 29 days
     news_stories = database_operations.fetch_news_stories_by_symbol_and_date_range(ticker, thirty_days_ago, datetime.now())
 
-    # If no data is found in the database or data is not for the last 30 days, fetch from the API
+    # If no data is found in the database or data is not for the last 20 days, fetch from the API
     if not news_stories:
         # Make API call to fetch news data
         articles = fetch_news_from_api(ticker)
@@ -28,8 +28,8 @@ def fetch_news_from_api(ticker):
     # Define the base URL for the News API
     base_url = 'https://newsapi.org/v2/everything'
 
-    # Calculate the start date as 30 days ago from the current date
-    thirty_days_ago = datetime.now() - timedelta(days=30)
+    # Calculate the start date as 20 days ago from the current date
+    thirty_days_ago = datetime.now() - timedelta(days=20)
     start_date = thirty_days_ago.strftime('%Y-%m-%d')
 
     # Define the parameters for the API request
