@@ -13,7 +13,7 @@ def main():
     <h1>Market Mood</h1>
     <p>A tool for helping investors based on market sentiment and historic stock pricing.</p>
     <form action="/search" method="POST">
-        <input name="search_query" placeholder="Enter stock symbol or company name">
+        <input name="search_query" placeholder="Enter stock symbol">
         <input type="submit" value="Search">
     </form>
     '''
