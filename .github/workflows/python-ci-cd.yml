@@ -14,10 +14,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # Updated to v3 to use Node.js 20
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4  # Updated to v4 to use Node.js 20
         with:
           python-version: '3.9'  # Use Python 3.9, adjust as needed
 
@@ -48,3 +48,9 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "market-mood"  # Replace with your Heroku app name
           heroku_email: "mreed5812@gmail.com"   # Replace with your Heroku account email
+
+      - name: Set up Datadog agent
+        uses: datadog/datadog-agent@master
+        with:
+          api-key: ${{ secrets.DATADOG_API_KEY }}
+          site: datadoghq.com
