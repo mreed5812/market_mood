@@ -24,14 +24,24 @@ class DatabaseOperations:
         conn = sqlite3.connect(self.DB_FILE_PATH)
         c = conn.cursor()
         for story in news_stories:
-            c.execute('''SELECT COUNT(*) FROM news_stories WHERE source_name = ? AND published_at = ?''', (story.get('source', {}).get('name', ''), story.get('publishedAt', '')))
+            source_name = story.get('source', {}).get('name', '')
+            published_at = story.get('publishedAt', '')
+
+            c.execute('''SELECT COUNT(*) FROM news_stories WHERE source_name = ? AND published_at = ?''', (source_name, published_at))
             existing_records = c.fetchone()[0]
             if existing_records == 0:
                 c.execute('''INSERT INTO news_stories (source_name, author, title, description, url, url_to_image, published_at, content, symbol)
-                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', (story.get('source', {}).get('name', ''), story.get('author', ''),
-                                                               story.get('title', ''), story.get('description', ''),
-                                                               story.get('url', ''), story.get('urlToImage', ''),
-                                                               story.get('publishedAt', ''), story.get('content', ''), symbol))
+                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', (
+                    source_name,
+                    story.get('author', ''),
+                    story.get('title', ''),
+                    story.get('description', ''),
+                    story.get('url', ''),
+                    story.get('urlToImage', ''),
+                    published_at,
+                    story.get('content', ''),
+                    symbol
+                ))
         conn.commit()
         conn.close()
 

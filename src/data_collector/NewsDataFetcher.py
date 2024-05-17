@@ -38,13 +38,24 @@ class NewsDataFetcher:
             data = response.json()
             articles = data.get('articles', [])
 
+            transformed_articles = []
             for article in articles:
-                published_at = datetime.strptime(article.get('publishedAt', ''), '%Y-%m-%dT%H:%M:%SZ')
-                article['publishedAt'] = published_at.strftime('%Y-%m-%d')
-                article['symbol'] = ticker
+                published_at = datetime.strptime(article.get('publishedAt', ''), '%Y-%m-%dT%H:%M:%SZ').strftime('%Y-%m-%d')
+                transformed_article = {
+                    'source_name': article['source']['name'],
+                    'author': article.get('author', ''),
+                    'title': article.get('title', ''),
+                    'description': article.get('description', ''),
+                    'url': article.get('url', ''),
+                    'url_to_image': article.get('urlToImage', ''),
+                    'published_at': published_at,
+                    'content': article.get('content', ''),
+                    'symbol': ticker
+                }
+                transformed_articles.append(transformed_article)
 
             #logging.debug(f"Fetched news from API: {articles}")
-            return articles
+            return transformed_articles
         except Exception as e:
             logging.error(f"Error fetching news: {e}")
             return []
