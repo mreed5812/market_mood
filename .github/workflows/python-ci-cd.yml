@@ -14,10 +14,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4  # Updated to v3 to use Node.js 20
+        uses: actions/checkout@v3  # Ensure using v3 for Node.js 20
+        with:
+          node-version: '20'  # Explicitly set Node.js version if needed
 
       - name: Set up Python
-        uses: actions/setup-python@v3  # 
+        uses: actions/setup-python@v4  # Ensure using v4 for Node.js 20
         with:
           python-version: '3.9'  # Use Python 3.9, adjust as needed
 
@@ -49,4 +51,6 @@ jobs:
           heroku_app_name: "market-mood"  # Replace with your Heroku app name
           heroku_email: "mreed5812@gmail.com"   # Replace with your Heroku account email
 
-      
+      # - name: Set up Prometheus and Grafana
+      #   run: |
+      #     docker-compose up -d prometheus grafana flask_app
