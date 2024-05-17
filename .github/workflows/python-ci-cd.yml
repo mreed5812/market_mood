@@ -19,14 +19,28 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x  # Use Python 3.x
+          python-version: '3.9'  # Use Python 3.9, adjust as needed
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Replace with your requirements file name
+          pip install -r requirements.txt
 
-      # You may need additional steps here for running tests, if you add tests in the future
+      - name: Run tests
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+          pytest src/tests
+        env:
+          CI: true
+
+      - name: Lint with flake8
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install flake8
+          flake8 src
 
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
