@@ -10,13 +10,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Use Ubuntu as the platform for local simulation 
+    runs-on: ubuntu-latest  # Use Ubuntu as the platform for local simulation
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3  # Ensure using v3 for Node.js 20
-        with:
-          node-version: '20'  # Explicitly set Node.js version if needed
 
       - name: Set up Python
         uses: actions/setup-python@v4  # Ensure using v4 for Node.js 20
@@ -26,21 +24,20 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          python -m venv venv
+          . venv/bin/activate
           pip install -r requirements.txt
 
       - name: Run tests
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
+          . venv/bin/activate
           pytest src/tests
         env:
           CI: true
 
       - name: Lint with flake8
         run: |
-          python -m venv venv
-          source venv/bin/activate
+          . venv/bin/activate
           pip install flake8
           flake8 src
 
@@ -49,8 +46,4 @@ jobs:
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "market-mood"  # Replace with your Heroku app name
-          heroku_email: "mreed5812@gmail.com"   # Replace with your Heroku account email
-
-      # - name: Set up Prometheus and Grafana
-      #   run: |
-      #     docker-compose up -d prometheus grafana flask_app
+          heroku_email: "mreed5812@gmail.com"   # Replace with your Heroku account em
