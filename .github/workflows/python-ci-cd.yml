@@ -49,8 +49,4 @@ jobs:
           heroku_app_name: "market-mood"  # Replace with your Heroku app name
           heroku_email: "mreed5812@gmail.com"   # Replace with your Heroku account email
 
-      - name: Set up Datadog agent
-        uses: datadog/datadog-agent@master
-        with:
-          api-key: ${{ secrets.DATADOG_API_KEY }}
-          site: datadoghq.com
+      
