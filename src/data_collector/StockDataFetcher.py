@@ -2,16 +2,18 @@ from datetime import datetime, timedelta
 import requests
 import logging
 
+
 class StockDataFetcher:
     def __init__(self):
         self.API_KEY = 'SFRHBUTCXB3RDG5S'
-        from . import database_operations  # Import database_operations here to avoid circular import
+        # Import database_operations here to avoid circular import
+        from . import database_operations
         self.database_operations_instance = database_operations.DatabaseOperations()
 
-    def fetch_stock_data(self, symbol):        
+    def fetch_stock_data(self, symbol):
         # Log the current datetime module to ensure it's in scope
         logging.debug(f"Current datetime module: {datetime}")
-        
+
         one_month_ago = datetime.now() - timedelta(days=30*1)
         start_date = one_month_ago.strftime('%Y-%m-%d')
 
@@ -43,14 +45,15 @@ class StockDataFetcher:
             logging.error(f"Error fetching stock data: {e}")
             return []
 
-
     def fetch_stock_prices(self, symbol):
         try:
             logging.debug(f"Beginning of fetch_stock_prices")
-            stock_prices = self.database_operations_instance.fetch_stock_prices_from_db(symbol)
+            stock_prices = self.database_operations_instance.fetch_stock_prices_from_db(
+                symbol)
             if not stock_prices:
                 self.fetch_and_insert_new_data(symbol)
-                stock_prices = self.database_operations_instance.fetch_stock_prices_from_db(symbol)
+                stock_prices = self.database_operations_instance.fetch_stock_prices_from_db(
+                    symbol)
             logging.debug(f"Fetched stock prices")
             return stock_prices
         except Exception as e:

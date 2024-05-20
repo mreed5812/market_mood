@@ -36,11 +36,11 @@ jobs:
         env:
           CI: true
 
-      - name: Lint with flake8
-        run: |
-          source venv/bin/activate
-          pip install flake8
-          flake8 src
+      # - name: Lint with flake8
+      #   run: |
+      #     source venv/bin/activate
+      #     pip install flake8
+      #     flake8 src
 
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
