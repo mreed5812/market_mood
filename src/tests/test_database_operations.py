@@ -22,13 +22,13 @@ class TestDatabaseOperations(unittest.TestCase):
         db_operations = db_ops.DatabaseOperations()
         news_stories = [
             {
-                "source": {"name": "Test Source"},
+                "source_name": "Test Source",
                 "author": "Test Author",
                 "title": "Test Title",
                 "description": "Test Description",
                 "url": "http://test.url",
-                "urlToImage": "http://test.url/image.jpg",
-                "publishedAt": "2024-01-01",
+                "url_to_image": "http://test.url/image.jpg",
+                "published_at": "2024-01-01",
                 "content": "Test content"
             }
         ]

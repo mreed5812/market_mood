@@ -1,6 +1,7 @@
 import os
 import sqlite3
 from datetime import datetime, timedelta
+import logging
 
 
 class DatabaseOperations:
@@ -23,11 +24,12 @@ class DatabaseOperations:
         conn.close()
 
     def insert_news_stories(self, news_stories, symbol):
+        logging.debug(f"News stories to be inserted into database: {news_stories}")
         conn = sqlite3.connect(self.DB_FILE_PATH)
         c = conn.cursor()
         for story in news_stories:
-            source_name = story.get('source', {}).get('name', '')
-            published_at = story.get('publishedAt', '')
+            source_name = story.get('source_name', '')
+            published_at = story.get('published_at', '')
 
             c.execute('''SELECT COUNT(*) FROM news_stories WHERE source_name = ? AND published_at = ?''',
                       (source_name, published_at))
@@ -40,7 +42,7 @@ class DatabaseOperations:
                     story.get('title', ''),
                     story.get('description', ''),
                     story.get('url', ''),
-                    story.get('urlToImage', ''),
+                    story.get('url_to_image', ''),
                     published_at,
                     story.get('content', ''),
                     symbol

@@ -22,13 +22,13 @@ class NewsDataFetcher:
                 database_operations_instance.insert_news_stories(
                     articles, ticker)
             return articles
-        # logging.debug(f"Fetched news stories from DB: {news_stories}")
+        logging.debug(f"Fetched news stories from DB: {news_stories}")
         return news_stories
 
     def fetch_news_from_api(self, ticker):
         params = {
             'q': ticker,
-            'from': (datetime.now() - timedelta(days=20)).strftime('%Y-%m-%d'),
+            'from': (datetime.now() - timedelta(days=29)).strftime('%Y-%m-%d'),
             'sortBy': 'publishedAt',
             'apiKey': self.API_KEY
         }
@@ -42,6 +42,8 @@ class NewsDataFetcher:
             response.raise_for_status()
             data = response.json()
             articles = data.get('articles', [])
+            
+            #logging.debug(f"API response data: {data}")
 
             transformed_articles = []
             for article in articles:
@@ -60,7 +62,7 @@ class NewsDataFetcher:
                 }
                 transformed_articles.append(transformed_article)
 
-            # logging.debug(f"Fetched news from API: {articles}")
+            #logging.debug(f"Fetched news from API: {articles}")
             return transformed_articles
         except Exception as e:
             logging.error(f"Error fetching news: {e}")
