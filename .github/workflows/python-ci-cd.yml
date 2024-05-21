@@ -48,3 +48,5 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "market-mood"  # Replace with your Heroku app name
           heroku_email: "mreed5812@gmail.com"  # Replace with your Heroku account email
+          env:
+            PYTHONPATH: src
