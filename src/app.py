@@ -5,6 +5,7 @@ from data_collector.NewsDataFetcher import NewsDataFetcher
 from data_analyzer.SentimentAnalyzer import SentimentAnalyzer
 from datetime import datetime
 import time
+import os
 
 app = Flask(__name__)
 
@@ -104,4 +105,7 @@ def search():
 
 
 if __name__ == "__main__":
+    print("Starting app")
+    print("Current working directory:", os.getcwd())
+    print("List of files in current directory:", os.listdir('.'))
     app.run(host="0.0.0.0", port=8080, debug=True)
