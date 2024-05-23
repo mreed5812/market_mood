@@ -39,31 +39,35 @@ The program will fetch recent stock price data along with any news articles rela
 
 ## Database Schema
 
-### news_stories
-id (INTEGER, PRIMARY KEY, AUTO_INCREMENT): Unique identifier for each news story.
-source_name (TEXT, NOT NULL): The name of the source from which the news story originated.
-author (TEXT): The author of the news story.
-title (TEXT, NOT NULL): The title of the news story.
-description (TEXT): A brief description of the news story.
-url (TEXT, NOT NULL): The URL link to the full news story.
-url_to_image (TEXT): The URL link to the image associated with the news story.
-published_at (TEXT, NOT NULL): The date and time when the news story was published.
-content (TEXT): The full content of the news story.
-symbol (TEXT, NOT NULL): The stock symbol related to the news story.
-sentiment (REAL): The sentiment score associated with the news story, indicating the sentiment (e.g., positive, negative, neutral).
+### `news_stories`
 
-### stock_prices
-id (INTEGER, PRIMARY KEY, AUTO_INCREMENT): Unique identifier for each stock price entry.
-symbol (TEXT, NOT NULL): The stock symbol for which the price data is recorded.
-date (TEXT, NOT NULL): The date for which the stock price data is recorded.
-open (REAL, NOT NULL): The opening price of the stock on the given date.
-high (REAL, NOT NULL): The highest price of the stock on the given date.
-low (REAL, NOT NULL): The lowest price of the stock on the given date.
-close (REAL, NOT NULL): The closing price of the stock on the given date.
-volume (INTEGER, NOT NULL): The trading volume of the stock on the given date.
+- **id** (INTEGER, PRIMARY KEY, AUTO_INCREMENT): Unique identifier for each news story.
+- **source_name** (TEXT, NOT NULL): The name of the source from which the news story originated.
+- **author** (TEXT): The author of the news story.
+- **title** (TEXT, NOT NULL): The title of the news story.
+- **description** (TEXT): A brief description of the news story.
+- **url** (TEXT, NOT NULL): The URL link to the full news story.
+- **url_to_image** (TEXT): The URL link to the image associated with the news story.
+- **published_at** (TEXT, NOT NULL): The date and time when the news story was published.
+- **content** (TEXT): The full content of the news story.
+- **symbol** (TEXT, NOT NULL): The stock symbol related to the news story.
+- **sentiment** (REAL): The sentiment score associated with the news story, indicating the sentiment (e.g., positive, negative, neutral).
 
-### SQL Schema 
-'''CREATE TABLE news_stories (
+### `stock_prices`
+
+- **id** (INTEGER, PRIMARY KEY, AUTO_INCREMENT): Unique identifier for each stock price entry.
+- **symbol** (TEXT, NOT NULL): The stock symbol for which the price data is recorded.
+- **date** (TEXT, NOT NULL): The date for which the stock price data is recorded.
+- **open** (REAL, NOT NULL): The opening price of the stock on the given date.
+- **high** (REAL, NOT NULL): The highest price of the stock on the given date.
+- **low** (REAL, NOT NULL): The lowest price of the stock on the given date.
+- **close** (REAL, NOT NULL): The closing price of the stock on the given date.
+- **volume** (INTEGER, NOT NULL): The trading volume of the stock on the given date.
+
+### SQL Schema Dump
+
+```sql
+CREATE TABLE news_stories (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     source_name TEXT NOT NULL,
     author TEXT,
@@ -87,4 +91,3 @@ CREATE TABLE stock_prices (
     close REAL NOT NULL,
     volume INTEGER NOT NULL
 );
-'''
