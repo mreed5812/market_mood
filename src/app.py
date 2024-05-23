@@ -58,7 +58,7 @@ def search():
             logging.error(f"Error updating sentiment values: {e}")
             return f"Error updating sentiment values: {e}", 500
 
-        time.sleep(5)
+        time.sleep(3)
 
         # I know there's a better way to do this but for now I'm stupidly re-fetching news data after sentiment has been added
         try:
