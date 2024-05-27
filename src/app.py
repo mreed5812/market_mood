@@ -58,12 +58,10 @@ def search():
             logging.error(f"Error updating sentiment values: {e}")
             return f"Error updating sentiment values: {e}", 500
 
-        time.sleep(3)
 
         # I know there's a better way to do this but for now I'm stupidly re-fetching news data after sentiment has been added
         try:
             news_stories = news_data_fetcher.fetch_news(search_query)
-            # logging.debug(f"Fetched news stories after sentiment update: {news_stories}")
         except Exception as e:
             logging.error(
                 f"Error fetching news stories after sentiment update: {e}")
