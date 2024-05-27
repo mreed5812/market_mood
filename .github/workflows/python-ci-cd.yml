@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest  # Use macOS as the platform for local simulation
+    runs-on: ubuntu-latest  # Use Ubuntu as the platform
 
     steps:
       - name: Checkout code
@@ -45,13 +45,14 @@ jobs:
       - name: Debugging Information
         run: |
           df -h
-          vm_stat
+          free -m
           uname -a
           env
           cat /etc/hosts
 
       - name: Install Heroku CLI
-        uses: akhileshns/heroku-cli-action@v1.0.0
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
 
       - name: Login to Heroku
         env:
