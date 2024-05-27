@@ -33,29 +33,22 @@ def main():
 @app.route("/search", methods=["POST"])
 def search():
     search_query = request.form.get("search_query", "")
-    logging.debug(f"Received search query: {search_query}")
     if search_query:
         # Fetch stock prices
         try:
             stock_prices = stock_data_fetcher.fetch_stock_prices(search_query)
-            logging.debug(f"Fetched stock prices")
         except Exception as e:
-            logging.error(f"Error fetching stock prices: {e}")
             return f"Error fetching stock prices: {e}", 500
 
         try:
             news_stories = news_data_fetcher.fetch_news(search_query)
-            # logging.debug(f"Fetched news stories: {news_stories}")
         except Exception as e:
-            logging.error(f"Error fetching news stories: {e}")
             return f"Error fetching news stories: {e}", 500
 
         # Update sentiment values
         try:
             sentiment_analyzer.update_sentiment_values(search_query)
-            logging.debug(f"Updated sentiment values for: {search_query}")
         except Exception as e:
-            logging.error(f"Error updating sentiment values: {e}")
             return f"Error updating sentiment values: {e}", 500
 
 
@@ -63,8 +56,7 @@ def search():
         try:
             news_stories = news_data_fetcher.fetch_news(search_query)
         except Exception as e:
-            logging.error(
-                f"Error fetching news stories after sentiment update: {e}")
+            
             return f"Error fetching news stories after sentiment update: {e}", 500
 
         if stock_prices and news_stories:
@@ -72,9 +64,7 @@ def search():
             try:
                 stock_prices.sort(
                     key=lambda x: datetime.strptime(x['date'], '%Y-%m-%d'))
-                logging.debug(f"Sorted stock prices")
             except Exception as e:
-                logging.error(f"Error sorting stock prices: {e}")
                 return f"Error sorting stock prices: {e}", 500
 
             # Extract date and close price for plotting
@@ -82,18 +72,14 @@ def search():
                 dates = [datetime.strptime(price['date'], '%Y-%m-%d')
                          for price in stock_prices]
                 close_prices = [price['close'] for price in stock_prices]
-                logging.debug(f"Extracted dates and close prices")
             except Exception as e:
-                logging.error(f"Error extracting dates and close prices: {e}")
                 return f"Error extracting dates and close prices: {e}", 500
 
             # Extract sentiment values for plotting
             try:
                 sentiment_values = [story.get('sentiment', 0)
                                     for story in news_stories]
-                logging.debug(f"Extracted sentiment values")
             except Exception as e:
-                logging.error(f"Error extracting sentiment values: {e}")
                 return f"Error extracting sentiment values: {e}", 500
 
             # Render a time series chart using Plotly
