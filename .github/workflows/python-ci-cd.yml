@@ -41,12 +41,34 @@ jobs:
       #     source venv/bin/activate
       #     pip install flake8
       #     flake8 src
+      - name: Debugging Information
+        run: |
+          df -h
+          free -m
+          uname -a
+          env
+          cat /etc/hosts
+
+
+      # - name: Deploy to Heroku
+      #   uses: akhileshns/heroku-deploy@v3.12.12
+      #   with:
+      #     heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+      #     heroku_app_name: "market-mood"  # Replace with your Heroku app name
+      #     heroku_email: "mreed5812@gmail.com"  # Replace with your Heroku account email
+      #   env:
+      #     PYTHONPATH: src
+
+      - name: Login to Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          echo $HEROKU_API_KEY | heroku auth:token
+          heroku whoami
 
       - name: Deploy to Heroku
-        uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: "market-mood"  # Replace with your Heroku app name
-          heroku_email: "mreed5812@gmail.com"  # Replace with your Heroku account email
         env:
-          PYTHONPATH: src
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          git remote add heroku https://market-mood-8e528490197d.herokuapp.com/
+          git push heroku HEAD:main -f
