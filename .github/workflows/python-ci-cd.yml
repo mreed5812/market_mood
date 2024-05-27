@@ -51,8 +51,7 @@ jobs:
           cat /etc/hosts
 
       - name: Install Heroku CLI
-        run: |
-          curl https://cli-assets.heroku.com/install.sh | sh
+        uses: akhileshns/heroku-cli-action@v1.0.0
 
       - name: Login to Heroku
         env:
