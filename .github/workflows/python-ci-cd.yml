@@ -78,7 +78,7 @@ jobs:
 
       - name: Configure Heroku Git remote with authentication
         run: |
-          git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/market-mood-8e528490197d.git
+          git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/market-mood.git
           git remote -v
 
       - name: Deploy to Heroku
